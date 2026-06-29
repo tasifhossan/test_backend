@@ -207,7 +207,44 @@ const ComplaintModel = {
     `;
     const result = await pool.query(query, [complaint_id]);
     return result.rows[0] || null;
+  },
+
+  // Add new complaint from citizen
+  async addNewComplain(longitude, latitude, city, street, title, description, citizen_id, imgUrl) {
+    const query = `
+        INSERT INTO complaints(longitude, latitude, city, street, title, description, status, citizen_id, image_url)
+        VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        RETURNING id, citizen_id, status;
+        `;
+    const result = await pool.query(query, [
+      longitude,
+      latitude,
+      city,
+      street,
+      title,
+      description,
+      "pending",
+      citizen_id,
+      imgUrl,
+    ]);
+    return result.rows[0] || null;
+  },
+
+  // Get user's complaint list with pagination
+  async userComplainList(user_id, limit = 10, offset = 0) {
+    const query = `
+      SELECT id, title, image_url, created_at, description,
+             longitude, latitude, street, city
+      FROM complaints
+      WHERE citizen_id = $1
+      ORDER BY created_at DESC
+      LIMIT $2
+      OFFSET $3;
+    `;
+    const response = await pool.query(query, [user_id, limit, offset]);
+    return response.rows;
   }
 };
 
 module.exports = ComplaintModel;
+

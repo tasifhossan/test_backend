@@ -1,7 +1,7 @@
-import pool from "../config/db.js";
-import { hashPassword } from "../utils/validator.js";
+const pool = require("../config/db.js");
+const { hashPassword } = require("../utils/validator.js");
 
-export const UserModel = {
+const UserModel = {
   // Find by Email
   async findByEmail(email) {
     const datas = `
@@ -51,3 +51,6 @@ export const UserModel = {
 
   //
 };
+
+module.exports = { UserModel };
+

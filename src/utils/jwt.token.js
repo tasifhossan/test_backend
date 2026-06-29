@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
 
-export const generateToken = (data) => {
+const generateToken = (data) => {
   const encodedToken = jwt.sign(
     {
       email: data.email,
@@ -15,7 +15,13 @@ export const generateToken = (data) => {
   return encodedToken;
 };
 
-export const decodeToken = async (token) => {
+const decodeToken = async (token) => {
   const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
   return decodedToken;
 };
+
+module.exports = {
+  generateToken,
+  decodeToken,
+};
+

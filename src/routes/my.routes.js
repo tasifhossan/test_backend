@@ -1,9 +1,10 @@
 const express = require("express");
-const auth_routes = require("./auth.routes");
 const { profile } = require("../controllers/profile.controller");
+const { checkAuth } = require("../middleware/auth.middleware.js");
 
 const profile_routes = express.Router();
 
-profile_routes.get("/profile", profile);
+profile_routes.get("/profile", checkAuth, profile);
 
 module.exports = profile_routes;
+

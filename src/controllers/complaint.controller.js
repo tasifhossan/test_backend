@@ -193,7 +193,7 @@ const createComplaint = async (req, res, next) => {
     const newComplaint = await ComplaintModel.createComplaint({
       citizen_id,
       description,
-      image_url,
+      image_url: image_url ? [image_url] : null,
       latitude: latitude ? parseFloat(latitude) : null,
       longitude: longitude ? parseFloat(longitude) : null,
       category: finalCategory,
